@@ -3,13 +3,12 @@ import questions from "../assets/questions";
 import Progress from "./Progress";
 import { questionsCTX } from "../store/questionsContext";
 
-const waitingTime = 15000;
+const waitingTime = 30000;
 const non_waitingTime = 2000;
 
 const QuestionCard = ({ handleQuizEnd }) => {
   const [currentQuestionId, setCurrentQuestionId] = useState(0);
   const [clickedButton, setClickedButton] = useState(null);
-  const [remainingTime, setRemainingTime] = useState(waitingTime * 1);
   const [progressState, setProgressState] = useState("waiting"); //it could be either "waiting" ,"checking" or "revealing"
   const questionCTX = useContext(questionsCTX);
 
@@ -26,13 +25,10 @@ const QuestionCard = ({ handleQuizEnd }) => {
         type: "ADD_QUESTION_INFO",
         payload: null,
       });
-      setRemainingTime(non_waitingTime);
       setProgressState("revealing");
     } else if (progressState === "checking") {
-      setRemainingTime(non_waitingTime);
       setProgressState("revealing");
     } else if (progressState === "revealing") {
-      setRemainingTime(waitingTime);
       setProgressState("waiting");
       setClickedButton(null);
       handleSwitchingToNextQuestion();
@@ -44,7 +40,6 @@ const QuestionCard = ({ handleQuizEnd }) => {
       type: "ADD_QUESTION_INFO",
       payload: buttonId * 1,
     });
-    setRemainingTime(non_waitingTime);
     setProgressState("checking");
   }
 
@@ -52,12 +47,11 @@ const QuestionCard = ({ handleQuizEnd }) => {
     <div id="quiz">
       <div id="question">
         <Progress
+          key={progressState}
           currentMaxTime={
             progressState === "waiting" ? waitingTime : non_waitingTime
           }
           progressState={progressState}
-          remainingTime={remainingTime}
-          setRemainingTime={setRemainingTime}
           handleProgressTimeout={handleProgressTimeout}
         />
         <h2>{questions[currentQuestionId].text}</h2>

@@ -53,6 +53,7 @@ const Result = () => {
         {questionCTX.questionsInteractionsInfo.map(({ chosenAns }, index) => {
           return (
             <li key={originalQuestions[index].id}>
+              <h3>{index+1}</h3>
               <p className="question">{originalQuestions[index].text}</p>
               <p
                 className={`user-answer ${

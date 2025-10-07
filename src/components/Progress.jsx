@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import { questionsCTX } from "../store/questionsContext";
 
-const Progress = ({
-  currentMaxTime,
-  progressState,
-  remainingTime,
-  setRemainingTime,
-  handleProgressTimeout,
-}) => {
+const Progress = ({ currentMaxTime, progressState, handleProgressTimeout }) => {
+  const [remainingTime, setRemainingTime] = useState(currentMaxTime * 1);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       setRemainingTime((prev) => prev - 10);
